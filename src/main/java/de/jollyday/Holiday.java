@@ -19,14 +19,14 @@ import java.util.Locale;
 
 import org.joda.time.LocalDate;
 
+import de.jollyday.util.Check;
 import de.jollyday.util.ResourceUtil;
 
 /**
  * Represents the holiday and contains the actual date and an localized
- * desription.
- *
+ * description.
+ * 
  * @author Sven Diedrichsen
- * @version $Id: $
  */
 public final class Holiday {
 	/**
@@ -47,24 +47,40 @@ public final class Holiday {
 	 * */
 	private final HolidayType type;
 
-		/**
-		 * Constructs a holiday for a date using the provided properties key to
-		 * retrieve the description with.
-		 *
-		 * @param date a {@link org.joda.time.LocalDate} object.
-		 * @param propertiesKey a {@link java.lang.String} object.
-		 * @param type a {@link de.jollyday.HolidayType} object.
-		 */
+	/**
+	 * Constructs a holiday for a date using the provided properties key to
+	 * retrieve the description with.
+	 * 
+	 * @param date
+	 *            a {@link org.joda.time.LocalDate} object.
+	 * @param propertiesKey
+	 *            a {@link java.lang.String} object.
+	 * @param type
+	 *            a {@link de.jollyday.HolidayType} object.
+	 */
 	public Holiday(LocalDate date, String propertiesKey, HolidayType type) {
-		super();
+		Check.notNull(date, "Date");
+		Check.notNull(type, "Type");
 		this.type = type;
 		this.date = date;
 		this.propertiesKey = propertiesKey == null ? "" : propertiesKey;
 	}
 
 	/**
-	 * <p>Getter for the field <code>date</code>.</p>
-	 *
+	 * Creates a copy using the provided date.
+	 * 
+	 * @param date
+	 * @return new {@link Holiday} instance
+	 */
+	public Holiday copyWithDate(LocalDate date) {
+		return new Holiday(date, propertiesKey, type);
+	}
+
+	/**
+	 * <p>
+	 * Getter for the field <code>date</code>.
+	 * </p>
+	 * 
 	 * @return the holiday date
 	 */
 	public LocalDate getDate() {
@@ -72,28 +88,30 @@ public final class Holiday {
 	}
 
 	/**
-	 * <p>Getter for the field <code>propertiesKey</code>.</p>
-	 *
+	 * <p>
+	 * Getter for the field <code>propertiesKey</code>.
+	 * </p>
+	 * 
 	 * @return the holidays properties key
 	 */
 	public String getPropertiesKey() {
 		return propertiesKey;
 	}
 
-				/**
-				 * The description read with the default locale.
-				 *
-				 * @return Description for this holiday
-				 */
+	/**
+	 * The description read with the default locale.
+	 * 
+	 * @return Description for this holiday
+	 */
 	public String getDescription() {
-		return ResourceUtil.getHolidayDescription(Locale.getDefault(),
-				getPropertiesKey());
+		return ResourceUtil.getHolidayDescription(Locale.getDefault(), getPropertiesKey());
 	}
 
 	/**
 	 * The description read with the provided locale.
-	 *
-	 * @param locale a {@link java.util.Locale} object.
+	 * 
+	 * @param locale
+	 *            a {@link java.util.Locale} object.
 	 * @return Description for this holiday
 	 */
 	public String getDescription(Locale locale) {
@@ -113,8 +131,7 @@ public final class Holiday {
 		}
 		if (obj instanceof Holiday) {
 			Holiday other = (Holiday) obj;
-			return other.date.equals(this.date)
-					&& other.propertiesKey.equals(this.propertiesKey)
+			return other.date.equals(this.date) && other.propertiesKey.equals(this.propertiesKey)
 					&& type.equals(other.type);
 		}
 		return false;
@@ -151,7 +168,7 @@ public final class Holiday {
 
 	/**
 	 * Gets the type holiday.
-	 *
+	 * 
 	 * @return the type holiday
 	 */
 	public HolidayType getType() {

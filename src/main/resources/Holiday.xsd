@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.example.org/Holiday"
-	xmlns:tns="http://www.example.org/Holiday" elementFormDefault="qualified">
+<schema targetNamespace="http://jollyday.sourceforge.net/Jollyday"
+	elementFormDefault="qualified" xmlns="http://www.w3.org/2001/XMLSchema" xmlns:jolly="http://jollyday.sourceforge.net/Jollyday">
 
 	<simpleType name="Weekday">
 		<restriction base="string">
@@ -32,82 +32,18 @@
 	</simpleType>
 
 
-	<complexType name="RelativeToFixed">
-		<complexContent>
-			<extension base="tns:Holiday">
-				<sequence>
-					<choice maxOccurs="1" minOccurs="1">
-						<element name="Days" type="int" maxOccurs="1" minOccurs="0">
-						</element>
-						<element name="Weekday" type="tns:Weekday" maxOccurs="1"
-							minOccurs="0">
-						</element>
-					</choice>
-					<element name="When" type="tns:When"></element>
-					<element name="Date" type="tns:Fixed"></element>
-				</sequence>
-
-			</extension>
-		</complexContent>
-	</complexType>
 
 
 
 
-	<complexType name="Holidays">
-		<sequence>
-			<element name="Fixed" type="tns:Fixed" maxOccurs="unbounded"
-				minOccurs="0">
-			</element>
-			<element name="RelativeToFixed" type="tns:RelativeToFixed"
-				maxOccurs="unbounded" minOccurs="0">
-			</element>
-			<element name="RelativeToWeekdayInMonth"
-				type="tns:RelativeToWeekdayInMonth" maxOccurs="unbounded"
-				minOccurs="0">
-			</element>
-			<element name="FixedWeekday" type="tns:FixedWeekdayInMonth"
-				maxOccurs="unbounded" minOccurs="0">
-			</element>
-			<element name="ChristianHoliday" type="tns:ChristianHoliday"
-				maxOccurs="unbounded" minOccurs="0">
-			</element>
-			<element name="IslamicHoliday" type="tns:IslamicHoliday"
-				maxOccurs="unbounded" minOccurs="0">
-			</element>
-			<element name="FixedWeekdayBetweenFixed"
-				type="tns:FixedWeekdayBetweenFixed" maxOccurs="unbounded"
-				minOccurs="0">
-			</element>
-			<element name="FixedWeekdayRelativeToFixed"
-				type="tns:FixedWeekdayRelativeToFixed" maxOccurs="unbounded"
-				minOccurs="0">
-			</element>
-			<element name="HinduHoliday" type="tns:HinduHoliday"
-				maxOccurs="unbounded" minOccurs="0">
-			</element>
-			<element name="HebrewHoliday" type="tns:HebrewHoliday"
-				maxOccurs="unbounded" minOccurs="0">
-			</element>
-			<element name="EthiopianOrthodoxHoliday"
-				type="tns:EthiopianOrthodoxHoliday" maxOccurs="unbounded"
-				minOccurs="0">
-			</element>
-			<element name="RelativeToEasterSunday" type="tns:RelativeToEasterSunday" minOccurs="0" maxOccurs="unbounded"></element>
-		</sequence>
 
 
-
-
-	</complexType>
-
-
-	<element name="Configuration" type="tns:Configuration"></element>
+	<element name="Configuration" type="jolly:Configuration"></element>
 
 	<complexType name="Configuration">
 		<sequence>
-			<element name="Holidays" type="tns:Holidays"></element>
-			<element name="SubConfigurations" type="tns:Configuration"
+			<element name="Holiday" type="jolly:HolidayRule" maxOccurs="unbounded" minOccurs="0"></element>
+			<element name="SubConfigurations" type="jolly:Configuration"
 				minOccurs="0" maxOccurs="unbounded">
 			</element>
 		</sequence>
@@ -117,8 +53,8 @@
 
 	<complexType name="Fixed">
 		<complexContent>
-			<extension base="tns:MoveableHoliday">
-				<attribute name="month" type="tns:Month"></attribute>
+			<extension base="jolly:Holiday">
+				<attribute name="month" type="jolly:Month"></attribute>
 
 				<attribute name="day">
 					<simpleType>
@@ -144,12 +80,12 @@
 
 	<complexType name="FixedWeekdayInMonth">
 		<complexContent>
-			<extension base="tns:Holiday">
-				<attribute name="which" type="tns:Which"></attribute>
+			<extension base="jolly:Holiday">
+				<attribute name="which" type="jolly:Which"></attribute>
 
-				<attribute name="weekday" type="tns:Weekday"></attribute>
+				<attribute name="weekday" type="jolly:Weekday"></attribute>
 
-				<attribute name="month" type="tns:Month"></attribute>
+				<attribute name="month" type="jolly:Month"></attribute>
 
 			</extension>
 		</complexContent>
@@ -165,22 +101,11 @@
 		</restriction>
 	</simpleType>
 
-	<complexType name="RelativeToWeekdayInMonth">
-		<complexContent>
-			<extension base="tns:Holiday">
-				<sequence>
-					<element name="FixedWeekday" type="tns:FixedWeekdayInMonth"></element>
-				</sequence>
-				<attribute name="weekday" type="tns:Weekday"></attribute>
-				<attribute name="when" type="tns:When"></attribute>
-			</extension>
-		</complexContent>
-	</complexType>
 
 	<complexType name="IslamicHoliday">
 		<complexContent>
-			<extension base="tns:Holiday">
-				<attribute name="type" type="tns:IslamicHolidayType">
+			<extension base="jolly:Holiday">
+				<attribute name="type" type="jolly:IslamicHolidayType">
 				</attribute>
 
 			</extension>
@@ -211,11 +136,11 @@
 
 	<complexType name="ChristianHoliday">
 		<complexContent>
-			<extension base="tns:Holiday">
-				<attribute name="type" type="tns:ChristianHolidayType">
+			<extension base="jolly:Holiday">
+				<attribute name="type" type="jolly:ChristianHolidayType">
 				</attribute>
 
-				<attribute name="chronology" type="tns:ChronologyType">
+				<attribute name="chronology" type="jolly:ChronologyType">
 				</attribute>
 
 			</extension>
@@ -253,24 +178,11 @@
 		</restriction>
 	</simpleType>
 
-	<complexType name="FixedWeekdayBetweenFixed">
-		<complexContent>
-			<extension base="tns:Holiday">
-				<sequence>
-					<element name="from" type="tns:Fixed"></element>
-					<element name="to" type="tns:Fixed"></element>
-				</sequence>
-				<attribute name="weekday" type="tns:Weekday"></attribute>
-			</extension>
-		</complexContent>
-	</complexType>
 
 	<complexType name="Holiday" abstract="true">
-		<attribute name="validFrom" type="int" use="optional" />
-		<attribute name="validTo" type="int" />
-		<attribute name="every" type="tns:HolidayCycleType" default="EVERY_YEAR" />
+		<attribute name="every" type="jolly:HolidayCycleType" default="EVERY_YEAR" />
 		<attribute name="descriptionPropertiesKey" type="string" />
-		<attribute name="localizedType" type="tns:HolidayType"
+		<attribute name="localizedType" type="jolly:HolidayType"
 			default="OFFICIAL_HOLIDAY" />
 	</complexType>
 
@@ -285,19 +197,21 @@
 		</restriction>
 	</simpleType>
 
-	<simpleType name="With">
+	<simpleType name="To">
 		<restriction base="string">
 			<enumeration value="NEXT"></enumeration>
 			<enumeration value="PREVIOUS"></enumeration>
 		</restriction>
 	</simpleType>
 
-	
+
 
 	<complexType name="MovingCondition">
-		<attribute name="substitute" type="tns:Weekday"></attribute>
-		<attribute name="with" type="tns:With"></attribute>
-		<attribute name="weekday" type="tns:Weekday"></attribute>
+		<sequence>
+			<element name="when" type="jolly:Weekday" minOccurs="0" maxOccurs="unbounded"></element>
+		</sequence>
+		<attribute name="to" type="jolly:To"></attribute>
+		<attribute name="weekday" type="jolly:Weekday"></attribute>
 	</complexType>
 
 	<simpleType name="HinduHolidayType">
@@ -308,32 +222,15 @@
 
 	<complexType name="HinduHoliday">
 		<complexContent>
-			<extension base="tns:Holiday">
-				<attribute name="type" type="tns:HinduHolidayType"></attribute>
-
+			<extension base="jolly:Holiday">
+				<attribute name="type" type="jolly:HinduHolidayType"></attribute>
 			</extension>
 		</complexContent>
 	</complexType>
 
 
 
-	<complexType name="MoveableHoliday" abstract="true">
-		<complexContent>
-			<extension base="tns:Holiday">
-				<sequence>
-					<element name="MovingCondition" type="tns:MovingCondition" maxOccurs="unbounded" minOccurs="0"></element>
-				</sequence>
-			</extension>
-		</complexContent>
-	</complexType>
 
-	<complexType name="HebrewHoliday">
-		<complexContent>
-			<extension base="tns:Holiday">
-				<attribute name="type" type="tns:HebrewHolidayType"></attribute>
-			</extension>
-		</complexContent>
-	</complexType>
 
 	<simpleType name="HebrewHolidayType">
 		<restriction base="string">
@@ -366,9 +263,8 @@
 
 	<complexType name="EthiopianOrthodoxHoliday">
 		<complexContent>
-			<extension base="tns:Holiday">
-				<attribute name="type"
-					type="tns:EthiopianOrthodoxHolidayType">
+			<extension base="jolly:Holiday">
+				<attribute name="type" type="jolly:EthiopianOrthodoxHolidayType">
 				</attribute>
 
 			</extension>
@@ -376,25 +272,13 @@
 	</complexType>
 
 	<simpleType name="EthiopianOrthodoxHolidayType">
-    	<restriction base="string">
-    		<enumeration value="TIMKAT"></enumeration>
-    		<enumeration value="ENKUTATASH"></enumeration>
-    		<enumeration value="MESKEL"></enumeration>
-    	</restriction>
-    </simpleType>
+		<restriction base="string">
+			<enumeration value="TIMKAT"></enumeration>
+			<enumeration value="ENKUTATASH"></enumeration>
+			<enumeration value="MESKEL"></enumeration>
+		</restriction>
+	</simpleType>
 
-	<complexType name="FixedWeekdayRelativeToFixed">
-		<complexContent>
-			<extension base="tns:Holiday">
-				<sequence>
-					<element name="day" type="tns:Fixed"></element>
-				</sequence>
-				<attribute name="which" type="tns:Which"></attribute>
-				<attribute name="weekday" type="tns:Weekday"></attribute>
-				<attribute name="when" type="tns:When"></attribute>
-			</extension>
-		</complexContent>
-	</complexType>
 
 
 	<simpleType name="HolidayCycleType">
@@ -411,14 +295,48 @@
 
 	<complexType name="RelativeToEasterSunday">
 		<complexContent>
-			<extension base="tns:Holiday">
+			<extension base="jolly:Holiday">
 				<sequence>
-					<element name="chronology"
-						type="tns:ChronologyType">
+					<element name="chronology" type="jolly:ChronologyType">
 					</element>
 					<element name="days" type="int"></element>
 				</sequence>
 			</extension>
 		</complexContent>
 	</complexType>
+
+	<complexType name="HolidayRule">
+		<sequence>
+		<choice>
+			<element name="Fixed" type="jolly:Fixed"></element>
+			<element name="FixedWeekdayInMonth"
+				type="jolly:FixedWeekdayInMonth">
+			</element>
+			<element name="RelativeToEasterSunday"
+				type="jolly:RelativeToEasterSunday">
+			</element>
+			<element name="IslamicHoliday" type="jolly:IslamicHoliday"></element>
+			<element name="HinduHoliday" type="jolly:HinduHoliday"></element>
+			<element name="EthiopianOrthodoxHoliday"
+				type="jolly:EthiopianOrthodoxHoliday">
+			</element>
+			<element name="ChristianHoliday"
+				type="jolly:ChristianHoliday">
+			</element>
+		</choice>
+		<sequence>
+			<element name="MovingCondition" type="jolly:MovingCondition" minOccurs="0" maxOccurs="unbounded"></element>
+		</sequence>
+		</sequence>
+		
+		<attribute name="id" type="string"></attribute>
+        <attribute name="validFrom" type="int"></attribute>
+		<attribute name="validTo" type="int"></attribute>
+		<attribute name="every" type="jolly:HolidayCycleType"></attribute>
+	</complexType>
+
+	<complexType name="HolidayRuleRef">
+		<attribute name="ref" type="string"></attribute>
+	</complexType>
+
 </schema>

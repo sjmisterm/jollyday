@@ -1,5 +1,5 @@
 /**
- * Copyright 2010 Sven Diedrichsen 
+ * Copyright 2012 Sven Diedrichsen 
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); 
  * you may not use this file except in compliance with the License. 
@@ -13,8 +13,9 @@
  * express or implied. See the License for the specific language 
  * governing permissions and limitations under the License. 
  */
-package de.jollyday.parser.impl;
+package de.jollyday.processor.impl;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import org.joda.time.LocalDate;
@@ -22,39 +23,44 @@ import org.joda.time.LocalDate;
 import de.jollyday.Holiday;
 import de.jollyday.HolidayType;
 import de.jollyday.config.FixedWeekdayInMonth;
-import de.jollyday.config.Holidays;
 import de.jollyday.config.Which;
-import de.jollyday.parser.AbstractHolidayParser;
+import de.jollyday.processor.HolidayProcessor;
 import de.jollyday.util.CalendarUtil;
 import de.jollyday.util.XMLUtil;
 
-/**
- * The Class FixedWeekdayInMonthParser.
- *
- * @author tboven
- * @version $Id: $
- */
-public class FixedWeekdayInMonthParser extends AbstractHolidayParser {
+import static de.jollyday.util.Check.*;
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see de.jollyday.parser.HolidayParser#parse(int, java.util.Set,
-	 * de.jollyday.config.Holidays)
+/**
+ * @author sven
+ *
+ */
+public class FixedWeekdayInMonthProcessor implements HolidayProcessor {
+
+	private final FixedWeekdayInMonth fixedWeekdayInMonth;
+
+	/**
+	 * @param fixedWeekdayInMonth
 	 */
-	/** {@inheritDoc} */
-	public void parse(int year, Set<Holiday> holidays, final Holidays config) {
-		for (FixedWeekdayInMonth fwm : config.getFixedWeekday()) {
-			if (!isValid(fwm, year)) {
-				continue;
-			}
-			LocalDate date = parse(year, fwm);
-			HolidayType type = XMLUtil.getType(fwm.getLocalizedType());
-			holidays.add(new Holiday(date, fwm.getDescriptionPropertiesKey(),
-					type));
-		}
+	public FixedWeekdayInMonthProcessor(FixedWeekdayInMonth fixedWeekdayInMonth) {
+		notNull(fixedWeekdayInMonth, "fixedWeekdayInMonth");
+		this.fixedWeekdayInMonth = fixedWeekdayInMonth;
+	}
+	
+	public void init() {
 	}
 
+	/* (non-Javadoc)
+	 * @see de.jollyday.processor.HolidayProcessor#process(int)
+	 */
+	public Set<Holiday> process(int year, String... args) {
+		Set<Holiday> holidays = new HashSet<Holiday>();
+		LocalDate date = parse(year, fixedWeekdayInMonth);
+			HolidayType type = XMLUtil.getType(fixedWeekdayInMonth.getLocalizedType());
+			holidays.add(new Holiday(date, fixedWeekdayInMonth.getDescriptionPropertiesKey(),
+					type));
+		return holidays;
+	}
+	
 	/**
 	 * Parses the.
 	 *
@@ -88,5 +94,6 @@ public class FixedWeekdayInMonthParser extends AbstractHolidayParser {
 		}
 		return date;
 	}
+
 
 }

@@ -30,6 +30,7 @@ import org.joda.time.chrono.JulianChronology;
 
 import de.jollyday.Holiday;
 import de.jollyday.config.Fixed;
+import de.jollyday.config.Weekday;
 
 /**
  * Utility class for date operations.
@@ -291,6 +292,17 @@ public abstract class CalendarUtil {
 			}
 		}
 		return false;
+	}
+	
+	/**
+	 * Returns <code>true</code> if the dates weekday equals the provided
+	 * weekday enum.
+	 * @param date date to check
+	 * @param weekday the weekday to compare
+	 * @return has the same wekkday.
+	 */
+	public static boolean isWeekday(LocalDate date, Weekday weekday){
+		return Weekday.values()[date.getDayOfWeek() - 1] == weekday;
 	}
 
 }
