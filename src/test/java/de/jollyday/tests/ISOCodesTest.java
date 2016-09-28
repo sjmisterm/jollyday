@@ -1,44 +1,38 @@
 /**
- * Copyright 2010 Sven Diedrichsen 
- * 
- * Licensed under the Apache License, Version 2.0 (the "License"); 
- * you may not use this file except in compliance with the License. 
- * You may obtain a copy of the License at 
- * 
- * http://www.apache.org/licenses/LICENSE-2.0 
- * 
- * Unless required by applicable law or agreed to in writing, software 
- * distributed under the License is distributed on an 
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either 
- * express or implied. See the License for the specific language 
- * governing permissions and limitations under the License. 
+ * Copyright 2010 Sven Diedrichsen
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ * express or implied. See the License for the specific language
+ * governing permissions and limitations under the License.
  */
 package de.jollyday.tests;
 
-import java.io.IOException;
-import java.util.Collections;
-import java.util.Enumeration;
-import java.util.HashSet;
-import java.util.Locale;
-import java.util.ResourceBundle;
-import java.util.Set;
-
-import junit.framework.Assert;
-
+import de.jollyday.util.ResourceUtil;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import de.jollyday.util.ResourceUtil;
+import java.io.IOException;
+import java.util.*;
+
+import static org.junit.Assert.*;
 
 /**
  * The Class ISOCodesTest.
- * 
+ *
  * @author Sven
  */
 public class ISOCodesTest {
 
-	private static final int NUMBER_OF_ISOCOUNTRIES = 248;
+	private static final int NUMBER_OF_ISOCOUNTRIES = 247;
 
 	private Locale defaultLocale;
 
@@ -69,8 +63,8 @@ public class ISOCodesTest {
 	public void testISOCodes() {
 		Locale.setDefault(defaultLocale);
 		Set<String> isoCodes = resourceUtil.getISOCodes();
-		Assert.assertNotNull(isoCodes);
-		Assert.assertEquals("Wrong number of ISO codes.", NUMBER_OF_ISOCOUNTRIES, isoCodes.size());
+		assertNotNull(isoCodes);
+		assertEquals("Wrong number of ISO codes.", NUMBER_OF_ISOCOUNTRIES, isoCodes.size());
 	}
 
 	/**
@@ -79,8 +73,8 @@ public class ISOCodesTest {
 	@Test
 	public void testISOCodesEN() {
 		Set<String> isoCodes = resourceUtil.getISOCodes();
-		Assert.assertNotNull(isoCodes);
-		Assert.assertEquals("Wrong number of ISO codes.", NUMBER_OF_ISOCOUNTRIES, isoCodes.size());
+		assertNotNull(isoCodes);
+		assertEquals("Wrong number of ISO codes.", NUMBER_OF_ISOCOUNTRIES, isoCodes.size());
 	}
 
 	/**
@@ -90,13 +84,13 @@ public class ISOCodesTest {
 	public void testISOCodesDE() {
 		Locale.setDefault(Locale.GERMANY);
 		Set<String> isoCodes = resourceUtil.getISOCodes();
-		Assert.assertNotNull(isoCodes);
-		Assert.assertEquals("Wrong number of ISO codes.", NUMBER_OF_ISOCOUNTRIES, isoCodes.size());
+		assertNotNull(isoCodes);
+		assertEquals("Wrong number of ISO codes.", NUMBER_OF_ISOCOUNTRIES, isoCodes.size());
 	}
 
 	/**
 	 * Test iso codes compare en with de.
-	 * 
+	 *
 	 * @throws IOException
 	 *             Signals that an I/O exception has occurred.
 	 */
@@ -110,7 +104,7 @@ public class ISOCodesTest {
 
 	/**
 	 * Compare l1 with l2.
-	 * 
+	 *
 	 * @param l1
 	 *            the first language
 	 * @param l2
@@ -128,20 +122,18 @@ public class ISOCodesTest {
 			}
 		}
 		if (misses.length() > 0) {
-			Assert.fail(misses.toString());
+			fail(misses.toString());
 		}
 	}
 
 	/**
 	 * Load.
-	 * 
-	 * @param filename
-	 *            the filename
+	 *
 	 * @param locale
 	 *            the locale
-	 * 
+	 *
 	 * @return the properties
-	 * 
+	 *
 	 * @throws IOException
 	 *             Signals that an I/O exception has occurred.
 	 */
